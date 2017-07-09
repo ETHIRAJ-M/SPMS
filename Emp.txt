@@ -1,0 +1,149 @@
+package SPMS;
+
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+public class Emp implements ActionListener {
+	// private static final long serialVersionUID = 1L;
+	JLabel lblName, lblPass, lblTrain_Period, lblCourse_Name, lblPost, lblSalary, lblN, lblNVal, lblP, lblPVal, lblT,
+			lblTVal, lblC, lblCVal, lblS, lblSVal, lblPo, lblPoVal;
+	JTextField txtName, txtPass, txtTrain_Period, txtCourse_Name, txtPost, txtSalary;
+	JButton btnShow;
+	ResultSet rs;
+	JFrame frame = new JFrame("ALL DETAIL");
+	static String value1;
+
+	public static void main(String args)
+
+	{
+		value1 = args;
+		Emp e = new Emp();
+		e.fun(args);
+
+	}
+
+
+	private void fun(String x) {
+		value1 = x;
+
+		JPanel pnlInput = new JPanel(new GridLayout(3, 2));
+
+		lblName = new JLabel(" Name ");
+		txtName = new JTextField(15);
+
+		lblPass = new JLabel(" Password ");
+		txtPass = new JPasswordField();
+
+		lblTrain_Period = new JLabel("  Train_Period ");
+		txtTrain_Period = new JTextField();
+
+		lblCourse_Name = new JLabel("  Course_Name ");
+		txtCourse_Name = new JTextField();
+
+		lblPost = new JLabel("  Post ");
+		txtPost = new JTextField();
+
+		lblSalary = new JLabel(" Salary ");
+		txtSalary = new JTextField();
+
+		pnlInput.add(lblName);
+		pnlInput.add(txtName);
+
+		pnlInput.add(lblPass);
+		pnlInput.add(txtPass);
+
+		pnlInput.add(lblTrain_Period);
+		pnlInput.add(txtTrain_Period);
+
+		pnlInput.add(lblCourse_Name);
+		pnlInput.add(txtCourse_Name);
+
+		pnlInput.add(lblPost);
+		pnlInput.add(txtPost);
+
+		pnlInput.add(lblSalary);
+		pnlInput.add(txtSalary);
+
+		JPanel pnlButton = new JPanel(new GridLayout(1, 2));
+
+		btnShow = new JButton("SHOW");
+
+
+		pnlButton.add(btnShow);
+
+		Container cn = frame.getContentPane();
+
+		cn.setLayout(new BoxLayout(cn, BoxLayout.Y_AXIS));
+
+		frame.add(pnlInput);
+		frame.add(pnlButton);
+		// frame.add(pnlNavAns);
+
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setSize(1700, 1700);
+		frame.setVisible(true);
+	btnShow.addActionListener(new ActionListener()
+	{
+		public void actionPerformed(ActionEvent ae)
+		{
+	
+	
+			try {
+				Class.forName("oracle.jdbc.OracleDriver");
+
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE", "system", "ethi");
+
+				String sql="select * from emp where name='" + value1 + "'";
+					Statement st = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		
+		       rs = st.executeQuery(sql);
+		       if(rs.next())
+		       {
+				String name = rs.getString("name");
+
+				String passw = rs.getString("pass");
+
+				String tname = rs.getString("train_period");
+				String cname = rs.getString("course_name");
+				String po = rs.getString("post");
+				String sal = rs.getString("salary");
+
+				txtName.setText(name);
+
+				txtPass.setText(passw);
+
+				txtTrain_Period.setText(tname);
+				txtCourse_Name.setText(cname);
+
+				txtPost.setText(po);
+
+				txtSalary.setText(sal);
+		       }
+			}
+
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+
+		}
+
+		});
+	
+	}
+}

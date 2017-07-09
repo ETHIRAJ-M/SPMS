@@ -1,0 +1,108 @@
+package SPMS;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+public class Login 
+{
+JButton submit;
+JLabel label1,label2,label3;
+JTextField text1,text2;
+JFrame f;
+Login()
+{
+	f=new JFrame();
+	f.getContentPane().setLayout(null);
+	label1=new JLabel();
+	label1.setText("**HR LOGIN**");
+	label1.setBounds(550,25,100,20);
+	label2=new JLabel();
+	label2.setText("User name::");
+	label2.setBounds(500,50,100,20);
+	text1=new JTextField(25);
+	text1.setBounds(600, 50, 100, 20);
+	label3=new JLabel();
+	label3.setText("Password::");
+	label3.setBounds(500,80,100,20);
+	text2=new JPasswordField(25);
+	text2.setBounds(600, 80, 100, 20);
+
+	submit=new JButton("Login");
+	submit.setBounds(550, 125, 100, 20);
+	f.add(label1);
+	f.add(label2);
+	f.add(text1);
+	f.add(label3);
+	f.add(text2);
+	
+	f.add(submit);
+	f.setSize(1024, 768);
+	f.setTitle("HR login");
+	f.setVisible(true);
+	submit.addActionListener(new ActionListener()
+	{
+		public void actionPerformed(ActionEvent ae)
+		{
+			String value1=text1.getText();
+			String value2=text2.getText();
+			String user1="";
+			String pass1="";
+			String user2="";
+			String pass2="";
+			try
+			{
+				Class.forName("oracle.jdbc.OracleDriver");
+				Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE","system","ethi");
+				Statement st=con.createStatement();
+				ResultSet res=st.executeQuery("select * from hr where name='"+value1+"' and pass='"+value2+"'");
+			while(res.next())
+			{
+				user1=res.getString("name");
+				pass1=res.getString("pass");
+			}
+			if(value1.equals(user2)&&value2.equals(pass2))
+			{
+				JOptionPane.showMessageDialog(null, "Incorrect Login or Password","Error",JOptionPane.ERROR_MESSAGE);
+			}
+			else if(value1.equals(user1)&&value2.equals(pass1))
+			{
+				
+				System.out.println("Check");
+				f.dispose();
+				Hr h=new Hr();
+				h.main(null);
+				
+				
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Incorrect login or password","Error",JOptionPane.ERROR_MESSAGE);
+			}
+			}
+			catch(Exception  e)
+			{
+				System.out.println(e.getMessage());
+			}
+		}
+	});
+	}
+	public static void main(String[] args)
+	{
+		Login frame=new Login();
+	
+}
+	
+
+	}
+

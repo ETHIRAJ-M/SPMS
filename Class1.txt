@@ -1,0 +1,62 @@
+package SPMS;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class Class1 {
+	JButton hr, emp;
+	JFrame f;
+	JLabel label;
+
+	Class1() {
+		f = new JFrame();
+		f.getContentPane().setLayout(null);
+		label = new JLabel();
+		label.setText("**WELCOME**");
+		label.setBounds(400, 50, 100, 20);
+
+		hr = new JButton("HR login");
+		hr.setBounds(400, 110, 100, 20);
+		emp = new JButton("Employee login");
+		emp.setBounds(400, 140, 100, 20);
+		f.add(label);
+		f.add(hr);
+		f.add(emp);
+		f.setSize(1024, 768);
+		f.setTitle("Software Personal Management System");
+		f.setVisible(true);
+		hr.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				try {
+					f.dispose();
+					Login l = new Login();
+					l.main(null);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		});
+		emp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				try {
+
+					f.dispose();
+					Login2 l1 = new Login2();
+					l1.main(null);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		});
+	}
+
+	public static void main(String[] args) {
+
+		Class1 frame = new Class1();
+	}
+
+}
